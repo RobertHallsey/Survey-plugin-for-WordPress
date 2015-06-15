@@ -1,5 +1,14 @@
 <?php
 
+/*
+Plugin Name: Survey Generator
+Description: Conduct custom surveys and summarize their responses.
+Version:     1.0
+Author:      Robert Hallsey (rhallsey@yahoo.com)
+License:     GPLv2
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
+*/
+
 defined('ABSPATH') or exit('No direct access. This is a WordPress plugin.' );
 
 define('SURVEY_RESET_BUTTON', 'Reset');
@@ -14,7 +23,7 @@ add_shortcode('survey_summarize', 'survey_summarize');
 add_action('init', 'survey_start_session', 1);
 add_action('wp_logout', 'survey_end_session');
 add_action('wp_login', 'survey_end_session');
-add_action('wp_enqueue_scripts', 'survey_generator_style');
+add_action('wp_enqueue_scripts', 'survey_scripts');
 
 function survey_start_session() {
 	if (!session_id()) {session_start();}
@@ -24,11 +33,11 @@ function survey_end_session() {
     session_destroy ();
 }
 
-function survey_generator_style() {
-	wp_register_style('survey_generator', plugins_url('style.css', __FILE__));
-	wp_register_script('formscript', plugins_url('script.js', __FILE__));
-	wp_enqueue_style('survey_generator');
-	wp_enqueue_script('formscript');
+function survey_scripts() {
+	wp_register_style('survey', plugins_url('survey.css', __FILE__));
+	wp_register_script('survey', plugins_url('survey.js', __FILE__));
+	wp_enqueue_style('survey');
+	wp_enqueue_script('survey');
 }
 
 function survey_conduct($given_survey = '') {

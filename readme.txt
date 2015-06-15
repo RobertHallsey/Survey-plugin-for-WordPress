@@ -1,4 +1,4 @@
-Survey Generator Plugin
+=== Survey Generator Plugin ===
 Contributors: hallsey
 Tags: survey, statistics, business
 Requires at least: 3.7
@@ -21,14 +21,14 @@ To summarize a survey, use the shortcode `[survey_summarize "survey-sample"]`. A
 
 1. Create the directory `survey_generator` in your plugin directory.
 2. Put these files in it.
-* survey_generator.php
-* script.js
-* style.css
+   * survey_generator.php
+   * script.js
+   * style.css
 3. Optionally, put these files in your upload directory.
-* survey-sample
-* survey-sample.csv
+   * survey-sample
+   * survey-sample.csv
 
-That's it.
+That's it. Please read `documentation.htm` to learn about survey defintion files and more.
 
 == Frequently Asked Questions ==
 
