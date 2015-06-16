@@ -5,6 +5,7 @@ Plugin Name: Survey Generator
 Description: Conduct custom surveys and summarize their responses.
 Version:     1.0
 Author:      Robert Hallsey (rhallsey@yahoo.com)
+Author URI:  http://www.clicketyhome.com/nifty
 License:     GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 */
@@ -16,6 +17,7 @@ define('SURVEY_SUBMIT_BUTTON', 'Submit');
 define('SURVEY_RESPONSE_FILE_EXT', 'csv');
 define('SURVEY_ERROR_NO_RESPONSE', 'Please answer question #%d');
 define('SURVEY_ERROR_EITHER_OR', 'Last option is either/or in question #%d');
+define('DS', DIRECTORY_SEPARATOR);
 
 add_shortcode('survey_conduct', 'survey_conduct');
 add_shortcode('survey_summarize', 'survey_summarize');
@@ -42,10 +44,22 @@ function survey_scripts() {
 
 function survey_conduct($given_survey = '') {
 	$given_survey = func_get_arg(0)[0];
+/*
+$upload_dir = wp_upload_dir();
+var_dump($upload_dir);exit;
+	array
+	  'path' => string 'C:\Users\admin\Apache\htdocs\wp/wp-content/uploads/2015/06'
+	  'url' => string 'http://localhost/wp/wp-content/uploads/2015/06'
+	  'subdir' => string '/2015/06'
+	  'basedir' => string 'C:\Users\admin\Apache\htdocs\wp/wp-content/uploads'
+	  'baseurl' => string 'http://localhost/wp/wp-content/uploads'
+	  'error' => boolean false
+*/	
 	if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 		if ($given_survey == '') {
 			exit('No survey name specified');
 		}
+		$given_survey = check_given_name($given_survey);
 		$survey = new Survey($given_survey);
 		$error = $survey->load_survey_file();
 		if ($error) exit($error);
@@ -72,6 +86,7 @@ function survey_summarize($given_survey = '') {
 	if ($given_survey == '') {
 		exit('No survey name specified');
 	}
+	$given_survey = check_given_name($given_survey);
 	$survey = new Survey($given_survey);
 	$error = $survey->load_survey_file();
 	if ($error) exit($error);
@@ -79,6 +94,19 @@ function survey_summarize($given_survey = '') {
 	if ($error) exit($error);
 	$survey->summarize_responses();
 	$survey->render_summary($given_survey);
+}
+
+function check_given_name($given_name) {
+	$upload_dir = wp_upload_dir();
+	if (!file_exists($given_survey)) {
+		if (file_exists($upload_dir['basedir'] . DS . $given_name)) {
+			$given_name = str_replace('/', DS, $upload_dir['basedir']) . DS . $given_name;
+		}
+		elseif (file_exists($upload_dir['path'] . DS . $given_survey)) {
+			$given_name = str_replace('/', DS, $upload_dir['path']) . DS . $given_name;
+		}
+	}
+	return $given_name;
 }
 	
 function survey_name($given_survey = '') {
