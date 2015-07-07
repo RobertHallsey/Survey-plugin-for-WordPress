@@ -1,4 +1,12 @@
+/*
+This is the stylesheet for the WordPress survey plugin.
+*/
+
 /* #sf styles the survey form */
+
+#sf table {
+	border-collapse: collapse;
+}
 
 #sf .type1 thead {
 	border-bottom: 1px solid;
@@ -22,13 +30,14 @@
 #sf fieldset {
 	padding: 0;
 	border: none;
-	margin: 0;
+	margin: 0 0 10px 0;
 }
 
 
 /* #ss styles the survey summary */
 
 #ss table {
+	border-collapse: collapse;
 	border: 2px solid black;
 	margin-bottom: 30px;
 }
