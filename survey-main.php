@@ -42,37 +42,31 @@ function survey_scripts() {
 	wp_enqueue_script('survey');
 }
 
-function survey_conduct($given_survey = '') {
+function survey_conduct($given_survey) {
 	$given_survey = $given_survey[0];
 	if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-		if (!file_exists($given_survey)) {
-			$given_survey = check_other_paths($given_survey);
-		}
-		$survey = new Survey($given_survey);
+		$survey = new Survey(check_other_paths($given_survey));
 		$survey->prepareSurvey();
 		$_SESSION['survey_running'] = TRUE;
 	}
 	else { // must be POST
 		if (!isset($_SESSION['survey_running'])) exit ('No running survey');
 		$survey = new Survey($_POST['survey_file']);
-		if ($survey->processSurvey(
-			$_POST['survey_save'],
-			$_POST['survey_data']) == TRUE) {
+		if ($survey->processSurvey($_POST['survey_save'], $_POST['survey_data']) == TRUE) {
 			unset($_SESSION['survey_running']);
 		}
 	}
 	echo $survey->theForm();
 }
 
-function survey_summarize($given_survey = '') {
-	$given_survey = $given_survey[0];
-	$given_survey = check_other_paths($given_survey);
-	$survey = new Survey($given_survey);
-	echo $survey->prepareSummary();
+function survey_summarize($given_survey) {
+	$survey = new Survey(check_other_paths($given_survey));
+	$survey->prepareSummary();
 	echo $survey->theSummary();
 }
 
 function check_other_paths($given_survey) {
+	if (file_exists($given_survey)) return $given_survey;
 	$upload_dir = wp_upload_dir();
 	$test_file = $upload_dir['path'] . DS . $given_survey;
 	if (file_exists($test_file)) return $test_file;
