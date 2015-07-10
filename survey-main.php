@@ -60,6 +60,7 @@ function survey_conduct($given_survey) {
 }
 
 function survey_summarize($given_survey) {
+	$given_survey = $given_survey[0];
 	$survey = new Survey(check_other_paths($given_survey));
 	$survey->prepareSummary();
 	echo $survey->theSummary();
