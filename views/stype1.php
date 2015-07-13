@@ -1,8 +1,9 @@
 <?php
 
 /**
- * This file is a view file from the Survey Generator system.
+ * The Survey Generator makes it easy to conduct custom surveys.
  *
+ * This file is part of the Survey Generator.
  * @author Robert Hallsey <rhallsey@yahoo.com>
  * @copyright Robert Hallsey, 2015
  * @license http://www.gnu.org/licenses/gpl.html GPLv3 license
